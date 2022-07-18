@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         adapter.onItemClickListener = {
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.container, SelectedItemFragment.newInstance(this, it))
+                .add(R.id.container, SelectedItemFragment.newInstance(it))
                 .addToBackStack(null)
                 .commit()
         }

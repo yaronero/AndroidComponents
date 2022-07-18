@@ -1,6 +1,5 @@
 package com.example.androidcomponents.presentation
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +39,7 @@ class SelectedItemFragment : Fragment() {
 
         private const val ITEM = "item"
 
-        fun newInstance(context: Context, item: Item): Fragment {
+        fun newInstance(item: Item): Fragment {
             return SelectedItemFragment().apply{
                 arguments = bundleOf(ITEM to item)
             }
