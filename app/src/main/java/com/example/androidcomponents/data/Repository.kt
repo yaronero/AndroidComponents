@@ -6,10 +6,8 @@ object Repository {
 
     private const val ITEM_LIST_SIZE = 20
 
-    private var list = mutableListOf<Item>()
-
-    init {
-        list = (0 until ITEM_LIST_SIZE)
+    private val list by lazy {
+        (0 until ITEM_LIST_SIZE)
             .map { Item(it, "Name $it", "Description $it") }
             .toMutableList()
     }

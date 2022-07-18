@@ -11,9 +11,7 @@ import com.example.androidcomponents.databinding.FragmentItemListBinding
 
 class ItemListFragment : Fragment() {
 
-    private val binding by lazy {
-        FragmentItemListBinding.inflate(layoutInflater)
-    }
+    private lateinit var binding: FragmentItemListBinding
 
     private val viewModel by lazy {
         ViewModelProvider(this)[MainViewModel::class.java]
@@ -28,6 +26,7 @@ class ItemListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        binding = FragmentItemListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,14 +39,14 @@ class ItemListFragment : Fragment() {
         }
     }
 
-    private fun setupItemAdapter(){
+    private fun setupItemAdapter() {
         binding.rvItemList.adapter = adapter
     }
 
-    private fun onItemClickListener(id: Int){
+    private fun onItemClickListener(id: Int) {
         parentFragmentManager
             .beginTransaction()
-            .add(R.id.container, SelectedItemFragment.newInstance(id))
+            .replace(R.id.container, SelectedItemFragment.newInstance(id))
             .addToBackStack(null)
             .commit()
     }

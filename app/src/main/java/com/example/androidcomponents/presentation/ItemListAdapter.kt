@@ -8,23 +8,19 @@ import com.example.androidcomponents.domain.Item
 
 class ItemListAdapter(
     var onItemClickListener: ((Int) -> Unit)
-    ) : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()) {
+) : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val binding = ItemBinding
-            .inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false)
-        return ItemViewHolder(binding)
+        val binding = ItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ItemViewHolder(binding, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = currentList[position]
         holder.bind(item)
-
-        holder.itemView.setOnClickListener {
-            onItemClickListener.invoke(item.id)
-        }
     }
 }
