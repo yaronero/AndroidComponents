@@ -1,32 +1,24 @@
 package com.example.androidcomponents.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.androidcomponents.domain.Item
 
 object Repository {
 
-    private val list = mutableListOf<Item>()
+    private const val ITEM_LIST_SIZE = 20
 
-    private val listLD = MutableLiveData<List<Item>>()
+    private var list = mutableListOf<Item>()
 
     init {
-        for(i in 0..19){
-            val item = Item(i, "Name $i", "Description $i")
-            list.add(item)
-        }
-        setItemLiveDataList()
+        list = (0 until ITEM_LIST_SIZE)
+            .map { Item(it, "Name $it", "Description $it") }
+            .toMutableList()
     }
 
-    fun getItemList(): LiveData<List<Item>> {
-        return listLD
+    fun getItemList(): List<Item> {
+        return list
     }
 
     fun getItemById(id: Int): Item {
         return list.first { id == it.id }
-    }
-
-    private fun setItemLiveDataList(){
-        listLD.value = list
     }
 }

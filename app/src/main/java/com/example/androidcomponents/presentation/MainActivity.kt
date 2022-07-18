@@ -2,8 +2,6 @@ package com.example.androidcomponents.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
 import com.example.androidcomponents.databinding.ActivityMainBinding
 
@@ -13,28 +11,14 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private lateinit var viewModel: MainViewModel
-
-    private lateinit var adapter: ItemListAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-
-        setupItemAdapter()
-    }
-
-    private fun setupItemAdapter(){
-        adapter = ItemListAdapter(this, viewModel.list.value!!)
-        binding.rvItemList.adapter = adapter
-
-        adapter.onItemClickListener = {
+        if(savedInstanceState == null){
             supportFragmentManager
                 .beginTransaction()
-                .add(R.id.container, SelectedItemFragment.newInstance(it))
-                .addToBackStack(null)
+                .add(R.id.container, ItemListFragment.newInstance())
                 .commit()
         }
     }

@@ -1,35 +1,30 @@
 package com.example.androidcomponents.presentation
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.example.androidcomponents.R
+import androidx.recyclerview.widget.ListAdapter
+import com.example.androidcomponents.databinding.ItemBinding
 import com.example.androidcomponents.domain.Item
 
 class ItemListAdapter(
-    private val context: Context,
-    private val list: List<Item>
-    ) : RecyclerView.Adapter<ItemViewHolder>() {
-
-    var onItemClickListener: ((Item) -> Unit)? = null
+    var onItemClickListener: ((Int) -> Unit)
+    ) : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-        return ItemViewHolder(view)
+        val binding = ItemBinding
+            .inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false)
+        return ItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = list[position]
-        holder.itemId.text = context.getString(R.string.item_id, item.id.toString())
-        holder.itemName.text = item.name
+        val item = currentList[position]
+        holder.bind(item)
 
         holder.itemView.setOnClickListener {
-            onItemClickListener?.invoke(item)
+            onItemClickListener.invoke(item.id)
         }
-    }
-
-    override fun getItemCount(): Int {
-        return list.size
     }
 }
