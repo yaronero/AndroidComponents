@@ -1,11 +1,11 @@
 package com.example.androidcomponents.presentation
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
@@ -47,13 +47,12 @@ class ItemListFragment : Fragment() {
 
     private fun onItemClickListener(id: Int) {
         val sharedPref =
-            activity?.getSharedPreferences(getString(R.string.item_prefs), Context.MODE_PRIVATE)
+            activity?.getSharedPreferences(PREFS_ITEM, Context.MODE_PRIVATE)
                 ?: return
 
-        sharedPref
-            .edit()
-            .putInt(getString(R.string.last_selected_item_id), id)
-            .apply()
+        sharedPref.edit {
+            putInt(LAST_SELECTED_ITEM_ID, id)
+        }
 
         parentFragmentManager
             .beginTransaction()

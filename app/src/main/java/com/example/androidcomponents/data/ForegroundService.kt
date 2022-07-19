@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.androidcomponents.R
-import com.example.androidcomponents.presentation.MainActivity
 
 class ForegroundService : Service() {
 

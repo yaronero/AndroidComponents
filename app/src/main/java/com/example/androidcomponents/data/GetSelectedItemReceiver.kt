@@ -4,18 +4,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.androidcomponents.R
+import com.example.androidcomponents.presentation.PREFS_ITEM
+import com.example.androidcomponents.presentation.LAST_SELECTED_ITEM_ID
 
 class GetSelectedItemReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val sharedPrefs = context?.getSharedPreferences(
-            context.getString(R.string.item_prefs),
+            PREFS_ITEM,
             Context.MODE_PRIVATE
         )
 
         val id =
-            sharedPrefs?.getInt(context.getString(R.string.last_selected_item_id), UNDEFINED_ID)
+            sharedPrefs?.getInt(LAST_SELECTED_ITEM_ID, UNDEFINED_ID)
 
         Log.d("BR_TRIGGER", "GetSelectedItemReceiver: last selected item id is $id")
     }

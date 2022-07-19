@@ -6,7 +6,4 @@
     <string name="selected_id">Id: %s</string>
     <string name="selected_name">Name: %s</string>
     <string name="selected_description">Description: %s</string>
-
-    <string name="item_prefs">ITEM_PREFS</string>
-    <string name="last_selected_item_id">LAST_SELECTED_ITEM_ID</string>
 </resources>

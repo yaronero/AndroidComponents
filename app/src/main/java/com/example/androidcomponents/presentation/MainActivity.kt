@@ -6,11 +6,9 @@ import androidx.core.content.ContextCompat
 import com.example.androidcomponents.R
 import com.example.androidcomponents.data.ForegroundService
 import com.example.androidcomponents.databinding.ActivityMainBinding
-import android.net.ConnectivityManager
 
 import android.content.IntentFilter
 import com.example.androidcomponents.data.GetSelectedItemReceiver
-
 
 class MainActivity : AppCompatActivity() {
 
