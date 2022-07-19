@@ -1,4 +1,4 @@
-package com.example.androidcomponents.presentation
+package com.example.androidcomponents.presentation.selecteditem
 
 import android.os.Bundle
 import android.view.LayoutInflater

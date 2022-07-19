@@ -1,4 +1,4 @@
-package com.example.androidcomponents.presentation
+package com.example.androidcomponents.presentation.itemlist
 
 import android.content.Context
 import android.os.Bundle
@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
 import com.example.androidcomponents.databinding.FragmentItemListBinding
+import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
+import com.example.androidcomponents.utils.LAST_SELECTED_ITEM_ID
+import com.example.androidcomponents.utils.PREFS_ITEM
 
 class ItemListFragment : Fragment() {
 

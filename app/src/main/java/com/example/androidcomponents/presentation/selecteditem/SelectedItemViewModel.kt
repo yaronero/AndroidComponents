@@ -1,4 +1,4 @@
-package com.example.androidcomponents.presentation
+package com.example.androidcomponents.presentation.selecteditem
 
 import androidx.lifecycle.ViewModel
 import com.example.androidcomponents.data.Repository

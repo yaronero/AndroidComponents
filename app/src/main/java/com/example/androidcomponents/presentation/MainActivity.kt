@@ -9,6 +9,7 @@ import com.example.androidcomponents.databinding.ActivityMainBinding
 
 import android.content.IntentFilter
 import com.example.androidcomponents.data.GetSelectedItemReceiver
+import com.example.androidcomponents.presentation.itemlist.ItemListFragment
 
 class MainActivity : AppCompatActivity() {
 

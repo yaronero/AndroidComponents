@@ -38,8 +38,8 @@ class ForegroundService : Service() {
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notifications)
-            .setContentTitle("Last selected item")
-            .setContentText("id: 1 name 1")
+            .setContentTitle(getString(R.string.notification_content_title))
+            .setContentText(getString(R.string.notification_content_text))
             .setContentIntent(pendingIntent)
             .build()
     }

@@ -1,4 +1,4 @@
-package com.example.androidcomponents.presentation
+package com.example.androidcomponents.presentation.itemlist
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.androidcomponents.domain.Item
