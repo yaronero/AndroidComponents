@@ -1,14 +1,13 @@
 package com.example.androidcomponents.data
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.androidcomponents.R
+import com.example.androidcomponents.presentation.MainActivity
 
 class ForegroundService : Service() {
 
@@ -34,11 +33,17 @@ class ForegroundService : Service() {
         }
     }
 
-    private fun createNotification() = NotificationCompat.Builder(this, CHANNEL_ID)
-        .setSmallIcon(R.drawable.ic_notifications)
-        .setContentTitle("Last selected item")
-        .setContentText("id: 1 name 1")
-        .build()
+    private fun createNotification(): Notification {
+        val intent = Intent(GetSelectedItemReceiver.ACTION_SHOW_LAST_SELECTED)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+
+        return NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notifications)
+            .setContentTitle("Last selected item")
+            .setContentText("id: 1 name 1")
+            .setContentIntent(pendingIntent)
+            .build()
+    }
 
     companion object {
         private const val CHANNEL_NAME = "Last selected item"
