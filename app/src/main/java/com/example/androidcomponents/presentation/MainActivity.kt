@@ -25,9 +25,7 @@ class MainActivity : AppCompatActivity() {
         ContextCompat.startForegroundService(this, ForegroundService.newIntent(this))
 
         val myBroadcastReceiver = GetSelectedItemReceiver()
-        val intentFilter = IntentFilter().apply {
-            addAction(GetSelectedItemReceiver.ACTION_SHOW_LAST_SELECTED)
-        }
+        val intentFilter = IntentFilter(GetSelectedItemReceiver.ACTION_SHOW_LAST_SELECTED)
         registerReceiver(myBroadcastReceiver, intentFilter)
 
         if (savedInstanceState == null) {
