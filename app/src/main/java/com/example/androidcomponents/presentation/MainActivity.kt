@@ -2,7 +2,9 @@ package com.example.androidcomponents.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import com.example.androidcomponents.R
+import com.example.androidcomponents.data.ForegroundService
 import com.example.androidcomponents.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        ContextCompat.startForegroundService(this, ForegroundService.newIntent(this))
 
         if (savedInstanceState == null) {
             supportFragmentManager
