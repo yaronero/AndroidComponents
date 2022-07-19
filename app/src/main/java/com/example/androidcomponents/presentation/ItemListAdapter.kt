@@ -7,7 +7,7 @@ import com.example.androidcomponents.databinding.ItemBinding
 import com.example.androidcomponents.domain.Item
 
 class ItemListAdapter(
-    var onItemClickListener: ((Int) -> Unit)
+    private val onItemClickListener: ((Int) -> Unit)
 ) : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {

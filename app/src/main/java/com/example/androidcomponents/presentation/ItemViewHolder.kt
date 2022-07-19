@@ -6,7 +6,7 @@ import com.example.androidcomponents.domain.Item
 
 class ItemViewHolder(
     private val binding: ItemBinding,
-    var onItemClickListener: ((Int) -> Unit)
+    private val onItemClickListener: ((Int) -> Unit)
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Item) {

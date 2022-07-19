@@ -9,7 +9,7 @@ object Repository {
     private val list by lazy {
         (0 until ITEM_LIST_SIZE)
             .map { Item(it, "Name $it", "Description $it") }
-            .toMutableList()
+            .toList()
     }
 
     fun getItemList(): List<Item> {
