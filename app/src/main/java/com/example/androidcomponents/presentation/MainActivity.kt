@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.data.GetSelectedItemReceiver
 import com.example.androidcomponents.presentation.itemlist.ItemListFragment
-import com.example.androidcomponents.presentation.itemlist.ItemListViewModel
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.UNDEFINED_ID
 
