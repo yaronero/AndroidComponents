@@ -8,8 +8,10 @@ import com.example.androidcomponents.data.ForegroundService
 import com.example.androidcomponents.databinding.ActivityMainBinding
 import android.content.IntentFilter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.data.GetSelectedItemReceiver
 import com.example.androidcomponents.presentation.itemlist.ItemListFragment
+import com.example.androidcomponents.presentation.itemlist.ItemListViewModel
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.UNDEFINED_ID
 
@@ -17,6 +19,10 @@ class MainActivity : AppCompatActivity() {
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(this)[MainViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             launchFragment(ItemListFragment.newInstance())
 
-            if (selectedItemId != UNDEFINED_ID) {
+            if (viewModel.isIdDefined(selectedItemId)) {
                 launchFragment(SelectedItemFragment.newInstance(selectedItemId), true)
             }
         }

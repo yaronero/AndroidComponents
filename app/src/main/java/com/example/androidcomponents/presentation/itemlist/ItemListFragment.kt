@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
 import com.example.androidcomponents.databinding.FragmentItemListBinding
+import com.example.androidcomponents.presentation.ViewModelFactory
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.LAST_SELECTED_ITEM_ID
 import com.example.androidcomponents.utils.PREFS_ITEM
@@ -19,7 +20,10 @@ class ItemListFragment : Fragment() {
     private lateinit var binding: FragmentItemListBinding
 
     private val viewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
+        val sharedPref =
+            activity?.getSharedPreferences(PREFS_ITEM, Context.MODE_PRIVATE)
+                ?: throw RuntimeException("Activity is null")
+        ViewModelFactory(sharedPref).create(ItemListViewModel::class.java)
     }
 
     private val adapter by lazy {
