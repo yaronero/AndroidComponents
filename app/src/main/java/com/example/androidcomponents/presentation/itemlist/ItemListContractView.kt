@@ -1,0 +1,3 @@
+package com.example.androidcomponents.presentation.itemlist
+
+interface ItemListContractView

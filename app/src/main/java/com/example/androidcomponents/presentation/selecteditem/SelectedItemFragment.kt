@@ -6,17 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
 import com.example.androidcomponents.databinding.FragmentSelectedItemBinding
+import com.example.androidcomponents.domain.Item
 import java.lang.RuntimeException
 
-class SelectedItemFragment : Fragment() {
+class SelectedItemFragment : Fragment(), SelectedItemContractView {
 
     private lateinit var binding: FragmentSelectedItemBinding
 
-    private val viewModel by lazy {
-        ViewModelProvider(this)[SelectedItemViewModel::class.java]
+    private val presenter by lazy {
+        SelectedItemPresenter()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter.attachView(this)
     }
 
     override fun onCreateView(
@@ -31,15 +36,22 @@ class SelectedItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val item = arguments?.getInt(ITEM_ID)?.let { viewModel.getItemById(it) }
+        arguments?.getInt(ITEM_ID)?.let { presenter.getItemById(it) }
             ?: throw RuntimeException("Item id is null")
+    }
 
+    override fun showItemInfo(item: Item) {
         with(binding) {
             selectedItemId.text = getString(R.string.selected_id, item.id.toString())
             selectedItemName.text = getString(R.string.selected_name, item.name)
             selectedItemDescription.text =
                 getString(R.string.selected_description, item.description)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
     }
 
     companion object {

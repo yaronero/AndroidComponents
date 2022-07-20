@@ -6,28 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
 import com.example.androidcomponents.databinding.FragmentItemListBinding
-import com.example.androidcomponents.presentation.ViewModelFactory
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.PREFS_ITEM
+import java.lang.RuntimeException
 
-class ItemListFragment : Fragment() {
+class ItemListFragment : Fragment(), ItemListContractView {
 
     private lateinit var binding: FragmentItemListBinding
 
-    private val viewModel by lazy {
-        val sharedPref =
-            activity?.getSharedPreferences(PREFS_ITEM, Context.MODE_PRIVATE)
-                ?: throw RuntimeException("Activity is null")
+    private val presenter by lazy {
+        val sharedPrefs = activity?.getSharedPreferences(PREFS_ITEM, Context.MODE_PRIVATE)
+            ?: throw RuntimeException("Activity is null")
 
-        val viewModelFactory = ViewModelFactory(sharedPref)
-        ViewModelProvider(this, viewModelFactory)[ItemListViewModel::class.java]
+        ItemListPresenter(sharedPrefs)
     }
 
     private val adapter by lazy {
         ItemListAdapter(::onItemClickListener)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter.attachView(this)
     }
 
     override fun onCreateView(
@@ -43,9 +45,7 @@ class ItemListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupItemAdapter()
-        viewModel.list.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+        adapter.submitList(presenter.loadItemList())
     }
 
     private fun setupItemAdapter() {
@@ -53,13 +53,18 @@ class ItemListFragment : Fragment() {
     }
 
     private fun onItemClickListener(id: Int) {
-        viewModel.putItemIdInPrefs(id)
+        presenter.putItemIdInPrefs(id)
 
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.container, SelectedItemFragment.newInstance(id))
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
     }
 
     companion object {

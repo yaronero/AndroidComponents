@@ -2,25 +2,22 @@ package com.example.androidcomponents.presentation.itemlist
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.androidcomponents.data.Repository
 import com.example.androidcomponents.domain.Item
 import com.example.androidcomponents.utils.LAST_SELECTED_ITEM_ID
 
-class ItemListViewModel(
-    private val sharedPreferences: SharedPreferences
-) : ViewModel() {
+class ItemListPresenter(private val sharedPreferences: SharedPreferences) {
 
     private val repository = Repository
 
-    private val _list = MutableLiveData<List<Item>>()
-    val list: LiveData<List<Item>>
-        get() = _list
+    private var view: ItemListContractView? = null
 
-    init {
-        _list.value = repository.getItemList()
+    fun attachView(view: ItemListContractView) {
+        this.view = view
+    }
+
+    fun loadItemList(): List<Item>{
+        return repository.getItemList()
     }
 
     fun putItemIdInPrefs(id: Int){
@@ -28,5 +25,9 @@ class ItemListViewModel(
         sharedPreferences.edit {
             putInt(LAST_SELECTED_ITEM_ID, id)
         }
+    }
+
+    fun detachView() {
+        view = null
     }
 }

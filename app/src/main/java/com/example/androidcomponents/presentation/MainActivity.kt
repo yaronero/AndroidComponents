@@ -14,19 +14,21 @@ import com.example.androidcomponents.presentation.itemlist.ItemListFragment
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.UNDEFINED_ID
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainContractView {
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
+    private val presenter by lazy {
+        MainPresenter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        presenter.attachView(this)
 
         ContextCompat.startForegroundService(this, ForegroundService.newIntent(this))
 
@@ -41,13 +43,11 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             launchFragment(ItemListFragment.newInstance())
 
-            if (viewModel.isIdDefined(selectedItemId)) {
-                launchFragment(SelectedItemFragment.newInstance(selectedItemId), true)
-            }
+            presenter.isIdDefined(selectedItemId)
         }
     }
 
-    private fun launchFragment(fragment: Fragment, addToBackStack: Boolean = false) {
+    override fun launchFragment(fragment: Fragment, addToBackStack: Boolean) {
         if (addToBackStack) {
             supportFragmentManager
                 .beginTransaction()
@@ -60,5 +60,10 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, fragment)
                 .commit()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
     }
 }
