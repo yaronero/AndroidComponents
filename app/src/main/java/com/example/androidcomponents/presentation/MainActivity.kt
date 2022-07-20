@@ -1,22 +1,17 @@
 package com.example.androidcomponents.presentation
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import com.example.androidcomponents.R
 import com.example.androidcomponents.data.ForegroundService
 import com.example.androidcomponents.databinding.ActivityMainBinding
-
 import android.content.IntentFilter
 import androidx.fragment.app.Fragment
 import com.example.androidcomponents.data.GetSelectedItemReceiver
 import com.example.androidcomponents.presentation.itemlist.ItemListFragment
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
-import com.example.androidcomponents.utils.LAST_SELECTED_ITEM_ID
-import com.example.androidcomponents.utils.PREFS_ITEM
 import com.example.androidcomponents.utils.UNDEFINED_ID
-import java.lang.reflect.UndeclaredThrowableException
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             launchFragment(ItemListFragment.newInstance())
 
-            if(selectedItemId != UNDEFINED_ID){
+            if (selectedItemId != UNDEFINED_ID) {
                 launchFragment(SelectedItemFragment.newInstance(selectedItemId), true)
             }
         }
