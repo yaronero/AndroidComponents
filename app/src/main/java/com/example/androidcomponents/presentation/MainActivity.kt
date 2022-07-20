@@ -15,6 +15,7 @@ import com.example.androidcomponents.presentation.itemlist.ItemListFragment
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.LAST_SELECTED_ITEM_ID
 import com.example.androidcomponents.utils.PREFS_ITEM
+import com.example.androidcomponents.utils.UNDEFINED_ID
 import java.lang.reflect.UndeclaredThrowableException
 
 class MainActivity : AppCompatActivity() {
@@ -33,30 +34,21 @@ class MainActivity : AppCompatActivity() {
         val intentFilter = IntentFilter(GetSelectedItemReceiver.ACTION_SHOW_LAST_SELECTED)
         registerReceiver(myBroadcastReceiver, intentFilter)
 
+        val selectedItemId =
+            intent?.getIntExtra(GetSelectedItemReceiver.SELECTED_ITEM_ID, UNDEFINED_ID)
+                ?: UNDEFINED_ID
+
         if (savedInstanceState == null) {
             launchFragment(ItemListFragment.newInstance())
-        }
 
-        val isIntentFromReceiver =
-            intent.getBooleanExtra(GetSelectedItemReceiver.IS_FROM_RECEIVER, false)
-
-        if (isIntentFromReceiver) {
-            startFragmentByReceiver()
-        }
-    }
-
-    private fun startFragmentByReceiver() {
-        val sharedPrefs = getSharedPreferences(PREFS_ITEM, Context.MODE_PRIVATE)
-        val selectedItemId =
-            sharedPrefs?.getInt(LAST_SELECTED_ITEM_ID, UNDEFINED_ID) ?: UNDEFINED_ID
-
-        if (selectedItemId != UNDEFINED_ID) {
-            launchFragment(SelectedItemFragment.newInstance(selectedItemId), true)
+            if(selectedItemId != UNDEFINED_ID){
+                launchFragment(SelectedItemFragment.newInstance(selectedItemId), true)
+            }
         }
     }
 
     private fun launchFragment(fragment: Fragment, addToBackStack: Boolean = false) {
-        if (addToBackStack){
+        if (addToBackStack) {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.container, fragment)
@@ -68,9 +60,5 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, fragment)
                 .commit()
         }
-    }
-
-    companion object {
-        private const val UNDEFINED_ID = -1
     }
 }
