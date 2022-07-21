@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.androidcomponents.R
 import com.example.androidcomponents.databinding.FragmentItemListBinding
+import com.example.androidcomponents.domain.Item
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.PREFS_ITEM
-import java.lang.RuntimeException
 
 class ItemListFragment : Fragment(), ItemListContractView {
 
@@ -45,11 +45,15 @@ class ItemListFragment : Fragment(), ItemListContractView {
         super.onViewCreated(view, savedInstanceState)
 
         setupItemAdapter()
-        adapter.submitList(presenter.loadItemList())
+        presenter.loadItemList()
     }
 
     private fun setupItemAdapter() {
         binding.rvItemList.adapter = adapter
+    }
+
+    override fun showItemList(list: List<Item>) {
+        adapter.submitList(list)
     }
 
     private fun onItemClickListener(id: Int) {

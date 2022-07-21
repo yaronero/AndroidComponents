@@ -1,15 +1,14 @@
 package com.example.androidcomponents.presentation
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.IntentFilter
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.androidcomponents.R
 import com.example.androidcomponents.data.ForegroundService
-import com.example.androidcomponents.databinding.ActivityMainBinding
-import android.content.IntentFilter
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.data.GetSelectedItemReceiver
+import com.example.androidcomponents.databinding.ActivityMainBinding
 import com.example.androidcomponents.presentation.itemlist.ItemListFragment
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.UNDEFINED_ID
@@ -47,19 +46,19 @@ class MainActivity : AppCompatActivity(), MainContractView {
         }
     }
 
-    override fun launchFragment(fragment: Fragment, addToBackStack: Boolean) {
-        if (addToBackStack) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .addToBackStack(null)
-                .commit()
-        } else {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit()
-        }
+    override fun openDetailsScreen(id: Int) {
+        launchFragment(SelectedItemFragment.newInstance(id), true)
+    }
+
+    private fun launchFragment(fragment: Fragment, addToBackStack: Boolean = false) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, fragment)
+            .also {
+                if (addToBackStack) {
+                    it.addToBackStack(null)
+                }
+            }.commit()
     }
 
     override fun onDestroy() {
