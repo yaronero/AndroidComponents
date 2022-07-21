@@ -16,14 +16,26 @@ class ItemListViewModel(
     private val repository = Repository
 
     private val _list = MutableLiveData<List<Item>>()
-    val list: LiveData<List<Item>>
+    private val list: LiveData<List<Item>>
         get() = _list
 
-    init {
-        _list.value = repository.getItemList()
+    private val _state = MutableLiveData<ItemListState>()
+    val state: LiveData<ItemListState>
+        get() = _state
+
+    fun obtainEvent(event: ItemListEvent) {
+        when (event) {
+            is ItemListEvent.LoadItemList -> {
+                _list.value = repository.getItemList()
+                _state.value = ItemListState.LoadingItemList(list.value!!)
+            }
+            is ItemListEvent.ClickOnListItem -> {
+                putItemIdInPrefs(event.id)
+            }
+        }
     }
 
-    fun putItemIdInPrefs(id: Int){
+    private fun putItemIdInPrefs(id: Int) {
 
         sharedPreferences.edit {
             putInt(LAST_SELECTED_ITEM_ID, id)

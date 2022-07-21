@@ -43,8 +43,18 @@ class ItemListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupItemAdapter()
-        viewModel.list.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        observeState()
+
+        viewModel.obtainEvent(ItemListEvent.LoadItemList)
+    }
+
+    private fun observeState() {
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                is ItemListState.LoadingItemList -> {
+                    adapter.submitList(it.list)
+                }
+            }
         }
     }
 
@@ -53,7 +63,7 @@ class ItemListFragment : Fragment() {
     }
 
     private fun onItemClickListener(id: Int) {
-        viewModel.putItemIdInPrefs(id)
+        viewModel.obtainEvent(ItemListEvent.ClickOnListItem(id))
 
         parentFragmentManager
             .beginTransaction()

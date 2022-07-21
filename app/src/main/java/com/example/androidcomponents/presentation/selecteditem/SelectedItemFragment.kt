@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
 import com.example.androidcomponents.databinding.FragmentSelectedItemBinding
-import java.lang.RuntimeException
+import com.example.androidcomponents.domain.Item
 
 class SelectedItemFragment : Fragment() {
 
@@ -31,9 +31,24 @@ class SelectedItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val item = arguments?.getInt(ITEM_ID)?.let { viewModel.getItemById(it) }
+        arguments?.getInt(ITEM_ID)
+            ?.let { viewModel.obtainEvent(SelectedItemEvent.LoadSelectedItemEvent(it)) }
             ?: throw RuntimeException("Item id is null")
 
+        observeState()
+    }
+
+    private fun observeState() {
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                is SelectedItemState.LoadingSelectedItem -> {
+                    showItem(it.item)
+                }
+            }
+        }
+    }
+
+    private fun showItem(item: Item) {
         with(binding) {
             selectedItemId.text = getString(R.string.selected_id, item.id.toString())
             selectedItemName.text = getString(R.string.selected_name, item.name)
