@@ -8,15 +8,24 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
+import com.example.androidcomponents.data.GetItemByIdUseCase
 import com.example.androidcomponents.databinding.FragmentSelectedItemBinding
-import com.example.androidcomponents.domain.Item
+import com.example.androidcomponents.presentation.factories.ItemDetailsViewModelFactory
 
 class SelectedItemFragment : Fragment() {
 
     private lateinit var binding: FragmentSelectedItemBinding
 
     private val viewModel by lazy {
-        ViewModelProvider(this)[SelectedItemViewModel::class.java]
+        val itemId = arguments?.getInt(ITEM_ID)!!
+
+        val factory = ItemDetailsViewModelFactory(
+            setOf(
+                GetItemByIdUseCase()
+            ),
+            itemId
+        )
+        ViewModelProvider(this, factory)[SelectedItemViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -31,29 +40,18 @@ class SelectedItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getInt(ITEM_ID)
-            ?.let { viewModel.obtainEvent(SelectedItemEvent.LoadSelectedItemEvent(it)) }
-            ?: throw RuntimeException("Item id is null")
-
-        observeState()
+        viewModel.state.observe(viewLifecycleOwner, ::renderState)
+        viewModel.loadItem()
     }
 
-    private fun observeState() {
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is SelectedItemState.LoadingSelectedItem -> {
-                    showItem(it.item)
-                }
+    private fun renderState(newState: SelectedItemState) {
+        newState.item?.also {
+            with(binding) {
+                selectedItemId.text = getString(R.string.selected_id, it.id.toString())
+                selectedItemName.text = getString(R.string.selected_name, it.name)
+                selectedItemDescription.text =
+                    getString(R.string.selected_description, it.description)
             }
-        }
-    }
-
-    private fun showItem(item: Item) {
-        with(binding) {
-            selectedItemId.text = getString(R.string.selected_id, item.id.toString())
-            selectedItemName.text = getString(R.string.selected_name, item.name)
-            selectedItemDescription.text =
-                getString(R.string.selected_description, item.description)
         }
     }
 

@@ -1,29 +1,19 @@
 package com.example.androidcomponents.presentation.selecteditem
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.androidcomponents.data.Repository
+import com.example.androidcomponents.base.BaseViewModel
+import com.example.androidcomponents.base.UseCase
+import com.example.androidcomponents.data.GetItemByIdUseCase
 import com.example.androidcomponents.domain.Item
 
-class SelectedItemViewModel : ViewModel() {
+class SelectedItemViewModel(
+    useCases: Set<UseCase<SelectedItemState, SelectedItemAction>>,
+    itemId: Int
+) : BaseViewModel<SelectedItemState, SelectedItemAction>(
+    useCases = useCases,
+    reducer = SelectedItemReducer(itemId)
+) {
 
-    private val repository = Repository
-
-    private val _state = MutableLiveData<SelectedItemState>()
-    val state: LiveData<SelectedItemState>
-        get() = _state
-
-    fun obtainEvent(event: SelectedItemEvent) {
-        when (event) {
-            is SelectedItemEvent.LoadSelectedItemEvent -> {
-                val item = getItemById(event.id)
-                _state.value = SelectedItemState.LoadingSelectedItem(item)
-            }
-        }
-    }
-
-    private fun getItemById(id: Int): Item {
-        return repository.getItemById(id)
+    fun loadItem() {
+        action(SelectedItemAction.Load)
     }
 }

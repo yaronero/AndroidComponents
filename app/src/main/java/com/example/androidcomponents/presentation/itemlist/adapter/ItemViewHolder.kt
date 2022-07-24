@@ -1,4 +1,4 @@
-package com.example.androidcomponents.presentation.itemlist
+package com.example.androidcomponents.presentation.itemlist.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcomponents.databinding.ItemBinding

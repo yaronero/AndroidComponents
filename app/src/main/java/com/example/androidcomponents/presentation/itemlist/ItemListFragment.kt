@@ -9,7 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
 import com.example.androidcomponents.databinding.FragmentItemListBinding
-import com.example.androidcomponents.presentation.ViewModelFactory
+import com.example.androidcomponents.presentation.factories.SharedPrefsViewModelFactory
+import com.example.androidcomponents.presentation.itemlist.adapter.ItemListAdapter
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.PREFS_ITEM
 
@@ -22,7 +23,7 @@ class ItemListFragment : Fragment() {
             activity?.getSharedPreferences(PREFS_ITEM, Context.MODE_PRIVATE)
                 ?: throw RuntimeException("Activity is null")
 
-        val viewModelFactory = ViewModelFactory(sharedPref)
+        val viewModelFactory = SharedPrefsViewModelFactory(sharedPref)
         ViewModelProvider(this, viewModelFactory)[ItemListViewModel::class.java]
     }
 
