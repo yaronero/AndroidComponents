@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
+import com.example.androidcomponents.data.usecases.GetItemListUseCase
 import com.example.androidcomponents.databinding.FragmentItemListBinding
-import com.example.androidcomponents.presentation.factories.SharedPrefsViewModelFactory
+import com.example.androidcomponents.presentation.factories.ItemListViewModelFactory
 import com.example.androidcomponents.presentation.itemlist.adapter.ItemListAdapter
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
 import com.example.androidcomponents.utils.PREFS_ITEM
@@ -23,8 +24,13 @@ class ItemListFragment : Fragment() {
             activity?.getSharedPreferences(PREFS_ITEM, Context.MODE_PRIVATE)
                 ?: throw RuntimeException("Activity is null")
 
-        val viewModelFactory = SharedPrefsViewModelFactory(sharedPref)
-        ViewModelProvider(this, viewModelFactory)[ItemListViewModel::class.java]
+        val factory = ItemListViewModelFactory(
+            setOf(
+                GetItemListUseCase()
+            ),
+            sharedPref
+        )
+        ViewModelProvider(this, factory)[ItemListViewModel::class.java]
     }
 
     private val adapter by lazy {
@@ -44,19 +50,13 @@ class ItemListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupItemAdapter()
-        observeState()
 
-        viewModel.obtainEvent(ItemListEvent.LoadItemList)
+        viewModel.state.observe(viewLifecycleOwner, ::renderState)
+        viewModel.loadList()
     }
 
-    private fun observeState() {
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
-                is ItemListState.LoadingItemList -> {
-                    adapter.submitList(it.list)
-                }
-            }
-        }
+    private fun renderState(state: ItemListState) {
+        adapter.submitList(state.list)
     }
 
     private fun setupItemAdapter() {
@@ -64,7 +64,7 @@ class ItemListFragment : Fragment() {
     }
 
     private fun onItemClickListener(id: Int) {
-        viewModel.obtainEvent(ItemListEvent.ClickOnListItem(id))
+        viewModel.putItemIdInPrefs(id)
 
         parentFragmentManager
             .beginTransaction()

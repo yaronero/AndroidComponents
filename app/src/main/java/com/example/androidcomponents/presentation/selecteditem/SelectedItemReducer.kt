@@ -10,7 +10,7 @@ class SelectedItemReducer(itemId: Int) : Reducer<SelectedItemState, SelectedItem
     )
 
     override fun reduce(state: SelectedItemState, action: SelectedItemAction): SelectedItemState {
-        return when(action) {
+        return when (action) {
             SelectedItemAction.None -> state
             SelectedItemAction.Load -> state
             is SelectedItemAction.ItemLoaded -> state.copy(

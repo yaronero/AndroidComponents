@@ -12,10 +12,12 @@ abstract class BaseViewModel<State, Action>(
     private val mutableState = MutableLiveData(reducer.initialState)
     private var stateValue: State
         get() = mutableState.value!!
-        set(value) { mutableState.value = value}
+        set(value) {
+            mutableState.value = value
+        }
     val state: LiveData<State> = mutableState
 
-    fun action(action: Action){
+    fun action(action: Action) {
         stateValue = reducer.reduce(stateValue, action)
         useCases
             .filter { it.canHandle(action) }

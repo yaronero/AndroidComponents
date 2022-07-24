@@ -1,6 +1,7 @@
-package com.example.androidcomponents.data
+package com.example.androidcomponents.data.usecases
 
 import com.example.androidcomponents.base.UseCase
+import com.example.androidcomponents.data.Repository
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemAction
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemState
 
