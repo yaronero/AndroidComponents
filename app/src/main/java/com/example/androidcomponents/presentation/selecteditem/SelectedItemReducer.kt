@@ -14,7 +14,6 @@ class SelectedItemReducer(itemId: Int) : Reducer<SelectedItemState, SelectedItem
             SelectedItemAction.None -> state
             SelectedItemAction.Load -> state
             is SelectedItemAction.ItemLoaded -> state.copy(
-                itemId = state.itemId,
                 item = action.item
             )
             is SelectedItemAction.Error -> state

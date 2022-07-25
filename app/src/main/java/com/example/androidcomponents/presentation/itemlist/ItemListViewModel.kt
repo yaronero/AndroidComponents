@@ -19,9 +19,6 @@ class ItemListViewModel(
     }
 
     fun putItemIdInPrefs(id: Int) {
-
-        sharedPreferences.edit {
-            putInt(LAST_SELECTED_ITEM_ID, id)
-        }
+        action(ItemListAction.SaveId(id))
     }
 }

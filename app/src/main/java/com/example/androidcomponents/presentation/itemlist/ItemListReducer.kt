@@ -15,6 +15,8 @@ class ItemListReducer : Reducer<ItemListState, ItemListAction> {
             is ItemListAction.ItemsLoaded -> state.copy(
                 list = action.itemList
             )
+            is ItemListAction.SaveId -> state
+            ItemListAction.IdSaved -> state
             is ItemListAction.Error -> state
         }
     }

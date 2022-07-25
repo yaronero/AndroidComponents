@@ -8,7 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
-import com.example.androidcomponents.data.usecases.GetItemByIdUseCase
+import com.example.androidcomponents.domain.selectedItem.GetItemByIdUseCase
 import com.example.androidcomponents.databinding.FragmentSelectedItemBinding
 import com.example.androidcomponents.presentation.factories.ItemDetailsViewModelFactory
 

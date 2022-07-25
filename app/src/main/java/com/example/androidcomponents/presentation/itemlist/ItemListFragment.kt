@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidcomponents.R
-import com.example.androidcomponents.data.usecases.GetItemListUseCase
+import com.example.androidcomponents.domain.itemList.GetItemListUseCase
 import com.example.androidcomponents.databinding.FragmentItemListBinding
+import com.example.androidcomponents.domain.itemList.PutIdInPrefsUseCase
 import com.example.androidcomponents.presentation.factories.ItemListViewModelFactory
 import com.example.androidcomponents.presentation.itemlist.adapter.ItemListAdapter
 import com.example.androidcomponents.presentation.selecteditem.SelectedItemFragment
@@ -26,7 +27,8 @@ class ItemListFragment : Fragment() {
 
         val factory = ItemListViewModelFactory(
             setOf(
-                GetItemListUseCase()
+                GetItemListUseCase(),
+                PutIdInPrefsUseCase(sharedPref)
             ),
             sharedPref
         )

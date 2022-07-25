@@ -1,4 +1,4 @@
-package com.example.androidcomponents.data.usecases
+package com.example.androidcomponents.domain.itemList
 
 import com.example.androidcomponents.base.UseCase
 import com.example.androidcomponents.data.Repository
