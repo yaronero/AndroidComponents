@@ -12,7 +12,7 @@ class ItemDetailsViewModelFactory(
     private val itemId: Int
 ) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val viewModel = when (modelClass) {
             SelectedItemViewModel::class.java -> SelectedItemViewModel(useCases, itemId)
             else -> throw IllegalStateException("Unknown viewModel class: $modelClass")

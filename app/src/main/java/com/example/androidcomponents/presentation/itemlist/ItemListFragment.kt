@@ -29,8 +29,7 @@ class ItemListFragment : Fragment() {
             setOf(
                 GetItemListUseCase(),
                 PutIdInPrefsUseCase(sharedPref)
-            ),
-            sharedPref
+            )
         )
         ViewModelProvider(this, factory)[ItemListViewModel::class.java]
     }
